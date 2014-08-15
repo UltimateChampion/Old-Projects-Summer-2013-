@@ -1,0 +1,74 @@
+<html>
+
+    <head>
+        
+        <style type="text/css">
+            canvas{border:#666 1px solid;}
+            </style>
+        
+        <title> Paint JS! </title> </head>
+
+    <body>
+        
+        Welcome to Paint!
+        <br>
+        <br>
+        <canvas id="cv" width="1000" height="500"></canvas>
+        
+        
+        
+        <script src="Shapes.js"></script>
+        <script src="UserInput.js"></script>
+        
+        <script type="text/javascript">
+            
+            
+            //////////draw here////////////
+            
+            function draw(){
+                
+                canv= document.getElementById("cv");
+                ctx= canv.getContext("2d");
+                
+                //ctx.fillRect(50,50,50,50);
+                
+                //tests //
+                    
+                mh= new mouseHandler(ctx);
+                
+                //lin= new Line(30,40,90,80);
+                //lin.draw(ctx);
+                
+                // tests //
+                
+                
+            }
+            
+            draw();
+            ///////// draw here /////////////
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </script>
+        
+        <script type="text/javascript" src="jscolor.js"></script>
+        
+        <input class="color" value="000000" onchange="changeColor(this.value)">
+        <br>
+        <button onclick="buttonRect()">Draw Rectangles</button>
+        <br>
+        <button onclick="buttonLine()">Draw Lines</button>
+        <br>
+        <button onclick="buttonStar()">Draw Stars</button>
+        
+    </body>
+
+
+
+</html>

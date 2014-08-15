@@ -1,0 +1,315 @@
+<html>
+	<head>
+		<title>Robot Amier</title>
+		<style>canvas { width: 100%; height: 100% }</style>
+	</head>
+	<body>
+        
+        
+        
+        
+        <script id="robot" type= "text/javascript">
+            
+            
+
+            
+            function Robot(){
+
+                var robtexture = new THREE.MeshBasicMaterial({
+                                                               map: THREE.ImageUtils.loadTexture('tex/dmetal.png')
+                                                               });
+                
+
+                
+                this.parts= [];
+                
+                this.robotgroup= new THREE.Object3D();
+                var current;
+                
+               
+                
+                current=new THREE.Mesh(new THREE.CubeGeometry(10,15,10), robtexture);
+                
+                
+                
+                
+                this.parts.push(current);
+                this.robotgroup.add(current);
+                
+                
+                
+                alert("hit");
+                
+                
+                
+
+                //right leg
+                
+                var geo=new THREE.CubeGeometry(3,10,3);
+                
+                //geo.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 5, 0 ) );
+                
+                current=new THREE.Mesh(geo, robtexture);
+                current.position.x-=2.5;
+                current.position.y-=11.5;
+                
+                this.parts.push(current);
+                this.robotgroup.add(current);
+              
+                
+                //left leg
+                
+                var geo=new THREE.CubeGeometry(3,10,3);
+                
+               // geo.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 5, 0 ) );
+                
+                current=new THREE.Mesh(geo, robtexture);
+                current.position.x+=2,5;
+                current.position.y-=11.5;
+                
+                
+                this.parts.push(current);
+                this.robotgroup.add(current);
+
+                
+                
+                
+                //right arm
+                
+                
+                geo=new THREE.CubeGeometry(2,9,2);
+                
+                
+                geo.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 4.5, 0 ) );
+                
+                
+                current=new THREE.Mesh(geo, robtexture);
+                current.position.x-=6;
+                current.position.y-=3;
+                current.rotation.x+=(3.14/2)
+                
+                this.parts.push(current);
+                this.robotgroup.add(current);
+                
+                
+                //this.robotgroup.position.x+=10;
+                
+                
+                
+                //left
+                
+                
+                
+                geo=new THREE.CubeGeometry(2,9,2);
+                
+                
+                geo.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 4.5, 0 ) );
+                
+                
+                current=new THREE.Mesh(geo, robtexture);
+                current.position.x+=6;
+                current.position.y-=3;
+                current.rotation.x+=(3.14/2)
+                
+                this.parts.push(current);
+                this.robotgroup.add(current);
+                
+                
+                //this.robotgroup.position.x+=10;
+                
+                
+                
+                //head
+                
+                geo=new THREE.CubeGeometry(6,7,6);
+                current= new THREE.Mesh(geo, robtexture);
+                current.position.y+=9.5;
+                
+                
+                this.parts.push(current);
+                this.robotgroup.add(current);
+                
+            }
+            
+
+                
+            
+        
+            function Floor(){
+                
+                
+                
+                
+                var current=new THREE.CubeGeometry(500, 5, 500);
+                
+                
+                
+                var tiletex=THREE.ImageUtils.loadTexture('tex/tile32.jpg');
+                tiletex.wrapS = tiletex.wrapT = THREE.RepeatWrapping;
+                tiletex.repeat.set( 32, 32 );
+                
+            var robtexture = new THREE.MeshLambertMaterial({
+                                                               map: tiletex
+                                                               });
+                
+            this.mesh1= new THREE.Mesh(current, robtexture);
+               this.mesh1.position.y-=17.5;
+                
+                
+                
+                
+            }
+                
+                
+            
+            
+            
+            
+            
+            
+        </script>
+        
+        
+        
+		<script src="three.min.js"></script>
+		<script>
+            
+            
+            var scene = new THREE.Scene();
+
+			var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 1, 1000);
+            
+			var renderer = new THREE.WebGLRenderer();
+            //renderer.setClearColor(0x000000, 1);
+            
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			document.body.appendChild(renderer.domElement);
+            
+            
+			var geometry = new THREE.CubeGeometry(1,1,1);
+            
+            
+			var material = new THREE.MeshBasicMaterial({color: 0x000000});
+            
+            
+            
+            //SKYBOX
+            ///////////
+            
+            
+            var skyboxgeo = new THREE.CubeGeometry(1000,1000,1000);
+            
+            var startex=THREE.ImageUtils.loadTexture('tex/skyt.jpg');
+            
+            var atltex=THREE.ImageUtils.loadTexture('tex/atl.jpg');
+            
+            startex.wrapS = startex.wrapT = THREE.RepeatWrapping;
+            startex.repeat.set( 256, 256 );
+            
+            var startexture = new THREE.MeshBasicMaterial({
+                                                           map: atltex
+                                                           });
+            startexture.side=THREE.DoubleSide;
+            
+            
+            
+            
+            var skybox = new THREE.Mesh(skyboxgeo,startexture);
+            //skybox.doubleSided= true;
+            scene.add(skybox);
+            
+            
+            
+            ////////////
+            
+            
+            
+            
+            
+        
+
+
+           var amier = new Robot();
+            scene.add(amier.robotgroup);
+
+            
+            
+            
+            
+
+            
+            
+            var radius=30;
+
+			camera.position.z = 30;
+            //camera.position.y+=30;
+            
+            
+            
+            var ambientLight = new THREE.AmbientLight(0xbbbbbb);
+            scene.add(ambientLight);
+            
+            var directionalLight = new THREE.DirectionalLight(0xffffff);
+            directionalLight.position.set(1, 1, 1).normalize();
+            scene.add(directionalLight);
+            
+           /////////////
+          
+            var armstuff=.01
+            var ground = new Floor();
+            scene.add(ground.mesh1);
+            
+            
+            
+            ///////////////
+            
+            
+            var rot=0;
+			var render = function () {
+				requestAnimationFrame(render);
+                
+				
+
+               // amier.robotgroup.rotation.y+=.01;
+                
+                //camera.rotation.y+=.01;
+                
+                if (amier.parts[3].rotation.x>2 || amier.parts[3].rotation.x<1){
+                    
+                   
+                    armstuff=-1*armstuff;
+                    
+                }
+                
+                 amier.parts[3].rotation.x+=armstuff;
+                 amier.parts[4].rotation.x-=armstuff;
+                
+                amier.parts[1].rotation.x+=armstuff*.85;
+                amier.parts[2].rotation.x-=armstuff*.85;
+                
+                amier.robotgroup.position.z+=.05;
+                
+                //move camera in a circle
+                camera.position.x= Math.cos(rot)*30;
+                camera.position.z=Math.sin(rot)*30;
+                camera.position.y+=.02;
+                
+                //camera.lookAt(amier.parts[0].position);
+                camera.lookAt(amier.robotgroup.position);
+                rot+=.005;
+                
+                
+                
+                
+                //
+                
+                
+				renderer.render(scene, camera);
+                
+			};
+            
+			render();
+
+            </script>
+	</body>
+</html>

@@ -1,0 +1,58 @@
+<html>
+<head>
+    <script type="text/javascript">
+        
+        var ctx;
+       function draw(){
+            
+            var canvas= document.getElementById("cv");
+            ctx= canvas.getContext("2d");
+            
+           //ctx.fillStyle = "#00A308";
+           //ctx.fillRect(50,50,50,50);
+            
+           //makeRect("#00A308");
+            
+            
+            
+        }
+        
+        function makeRect(c){
+            
+            
+            //alert("wee");
+            ctx.fillStyle = c;
+            ctx.clearRect(50,50,50,50);
+            ctx.fillRect(50,50,50,50);
+            
+        }
+        
+        
+        
+    </script>
+</head>
+    
+    
+    
+    
+<body onload="draw()">
+    
+    <script type="text/javascript" src="jscolor.js"></script>
+    
+    <canvas id="cv" width="500" height="500"></canvas>
+    
+    
+    <input class="color" value="66ff00" onchange="makeRect(this.value)">
+    
+    <script type="text/javascript">
+        
+        
+        
+        </script>
+    
+    
+</body>
+
+
+
+</html>

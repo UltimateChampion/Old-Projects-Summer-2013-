@@ -1,0 +1,414 @@
+<html>
+<head>
+    
+    <style type="text/css">
+        canvas{border:#666 1px solid;}
+    </style>
+    
+   <title>
+       Pongv1
+    </title>
+    
+    
+    <script type="text/javascript">
+        
+        var playerwidth=10;
+        var playerheight=75;
+        var speed=25;
+        var user;
+        var funx;
+        var funy;
+        
+        var code;
+        
+        window.onload=draw;
+        
+        
+        function draw(){
+            
+            canvas = document.getElementById("canvy");
+            ctx= canvas.getContext("2d");
+            
+            user=new Player(150, 100);
+            enem= new Enemy(850,200)
+            
+            
+            
+            
+            
+            
+            bob= new Ball(500,75, new Velocity(8+Math.random()*2,-8-Math.random()*2));
+            
+            
+            //hard AI
+           setInterval(function(){
+                        
+                        if ((enem.x-funx)>0 && Math.abs(enem.x-funx)<500){
+                        
+                        if ((enem.y-funy)<15 && (enem.y<425)){
+                        
+                        
+                        enem.move(0, 15);
+                        
+                        }
+                        
+                        else
+                        
+                        if ((enem.y-funy)>20 && (enem.y>0)){
+                        
+                        
+                        enem.move(0, -15);
+                        
+                        }
+                        
+                        }
+                        
+
+                        
+                        
+                        
+                        }, 100);
+            
+            
+            // try again AI
+            
+            /*setInterval(function(){
+                        
+                        
+                        
+                        
+             
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        }
+                        
+            
+                        , 2000)*/
+            
+            
+            
+            
+            
+        }
+        
+        
+        function Collider(x, y){
+            
+            this.x=x;
+            this.y=y;
+            
+        }
+        
+        function Velocity(x,y){
+            
+            this.xvel=x;
+            this.yvel=y;
+            
+        }
+        
+        function dotProduct(x1, y1, x2, y2){
+            
+            
+            return ((x1*x2)+(y1*y2));
+            
+        }
+        
+        
+        Velocity.prototype.getRefl= function(norm) {
+            
+            var mag= Math.sqrt((norm.xvel*norm.xvel)+(norm.yvel*norm.yvel));
+            
+            var ux=norm.xvel*(1/mag);
+            var uy=norm.yvel*(1/mag);
+            
+            
+            
+            
+            
+            var vu2= 2*dotProduct(this.xvel, this.yvel, ux, uy);
+            
+            //alert(vu2);
+            
+            
+            return new Velocity(this.xvel-(vu2*ux), this.yvel-(vu2*uy));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        function Ball(x,y, vel1){
+            
+            this.x=x;
+            this.y=y;
+            
+            
+            funx=this.x;
+            funy=this.y;
+            var vel= vel1;
+            
+            
+            
+            
+            
+            
+            
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 10, 0, Math.PI*2, true);
+            ctx.closePath();
+            ctx.fill();
+            
+            
+            
+            setInterval(function(){
+                        
+                        
+                        ctx.clearRect(funx-15, funy-15, 30,30);
+                        
+                        funx+=vel.xvel;
+                        funy+=vel.yvel;
+                        
+                        ctx.beginPath();
+                        ctx.arc(funx, funy, 10, 0, Math.PI*2, true);
+                        ctx.closePath();
+                        ctx.fill();
+                        
+                        
+                        if (funy>475){
+                        
+                        
+                        vel=vel.getRefl(new Velocity(0, -1));
+                        
+                        
+                        }
+                        
+                        if (funy<10){
+                        
+                        
+                        vel=vel.getRefl(new Velocity(0, 1));
+                        
+                        
+                        }
+                        
+                        if (funx<10){
+                        
+                        
+                        vel=vel.getRefl(new Velocity(1, 0));
+                        
+                        
+                        }
+                        
+                        if (funx>975){
+                        
+                        
+                        vel=vel.getRefl(new Velocity(-1, 0));
+                        
+                        
+                        }
+                        
+                        if ((Math.abs(funy-user.rightcollider.y)<65) && (Math.abs(funx-user.rightcollider.x)<15) ){
+                        
+                        
+                        vel=vel.getRefl(new Velocity(1, 0));
+                        user.move(0,0);
+                        
+                        }
+                        
+                        
+                        if ((Math.abs(funy-user.leftcollider.y)<65) && (Math.abs(funx-user.leftcollider.x)<15) ){
+                        
+                        
+                        vel=vel.getRefl(new Velocity(1, 0));
+                        user.move(0,0);
+                        
+                        }
+                        
+                        
+                        
+                        
+                        if ((Math.abs(funy-enem.rightcollider.y)<65) && (Math.abs(funx-enem.rightcollider.x)<15) ){
+                        
+                        
+                        vel=vel.getRefl(new Velocity(1, 0));
+                        user.move(0,0);
+                        
+                        }
+                        
+                        if ((Math.abs(funy-enem.leftcollider.y)<65) && (Math.abs(funx-enem.leftcollider.x)<15) ){
+                        
+                        
+                        vel=vel.getRefl(new Velocity(1, 0));
+                        user.move(0,0);
+                        
+                        }
+                        
+                        
+                        
+                        
+                        if (distance(user.x, user.y, funx, funy)< 110){
+                        
+                        user.move(0,0);
+                        
+                        }
+                        
+                        if (distance(enem.x, enem.y, funx, funy)< 110){
+                        
+                        enem.move(0,0);
+                        
+                        }
+                        
+                        
+                        },60);
+            
+        }
+        
+        
+        Ball.prototype.reflect= function(){
+            
+            
+        }
+        
+        
+        
+        function distance(x1, y1, x2, y2){
+            
+            
+            return Math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2)));
+            
+            
+        }
+        
+        function Player(x,y){
+            
+            
+            this.x=x;
+            this.y=y;
+            this.representation=ctx.fillRect(this.x,this.y, playerwidth, playerheight);
+            this.rightcollider= new Collider(this.x+playerwidth, this.y+(playerheight/2));
+            this.leftcollider= new Collider(this.x, this.y+(playerheight/2));
+            
+            this.botcollider= new Collider(this.x+(playerwidth/2), this.y+(playerheight));
+            this.topcollider= new Collider(this.x+(playerwidth/2), this.y);
+            
+            
+            
+            
+        }
+        
+        Player.prototype.move= function(x,y){
+            
+            ctx.clearRect(this.x,this.y, playerwidth, playerheight);
+            this.x+=x;
+            this.y+=y;
+            this.rightcollider.y+=y;
+            this.leftcollider.y+=y;
+            
+            this.botcollider.y+=y;
+            this.topcollider.y+=y;
+            
+            ctx.fillRect(this.x,this.y, playerwidth, playerheight);
+            
+            
+            
+        }
+        
+        document.onkeydown= function(e){
+            
+            code=e.keyCode;
+            
+            
+            
+            
+            if ((code==38) && (user.y>0)){ //up
+                
+                user.move(0, -1*speed);
+                
+            }
+            
+            if ((code==40) && (user.y<425)){ //down
+                
+                user.move(0, speed);
+                
+            }
+            
+            
+            
+        }
+        
+        
+        
+        function Enemy(x,y){
+            
+            
+            this.x=x;
+            this.y=y;
+            ctx.fillStyle="rgb(200,0,0)";
+            this.representation=ctx.fillRect(this.x,this.y, playerwidth, playerheight);
+            this.rightcollider= new Collider(this.x+playerwidth, this.y+(playerheight/2));
+            this.leftcollider= new Collider(this.x, this.y+(playerheight/2));
+            
+            this.botcollider= new Collider(this.x+(playerwidth/2), this.y+(playerheight));
+            this.topcollider= new Collider(this.x+(playerwidth/2), this.y);
+            ctx.fillStyle="rgb(0,0,0)";
+            
+            
+            
+            
+            
+            
+            
+        }
+        
+        Enemy.prototype.move= function(x,y){
+            
+            
+            ctx.clearRect(this.x,this.y, playerwidth, playerheight);
+            this.x+=x;
+            this.y+=y;
+            this.rightcollider.y+=y;
+            this.leftcollider.y+=y;
+            
+            this.botcollider.y+=y;
+            this.topcollider.y+=y;
+            
+            ctx.fillStyle="rgb(200,0,0)";
+            ctx.fillRect(this.x,this.y, playerwidth, playerheight);
+            ctx.fillStyle="rgb(0,0,0)";
+            
+            
+            
+        }
+        
+        
+        
+        
+        
+   </script>
+    
+    
+</head>
+    
+    
+
+<body>
+    
+PONG! (v1)
+    <br>
+    
+<canvas id="canvy" width="1000" height="500"></canvas>
+
+</body>
+    
+    
+</html>
